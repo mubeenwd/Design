@@ -1,0 +1,123 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Weather</title>
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/ionic.css">
+    <style type="text/css">
+        .header-s
+        {
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+            box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+            background: rgb(96,108,136); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(96,108,136,1) 0%, rgba(63,76,107,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(96,108,136,1)), color-stop(100%,rgba(63,76,107,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+        }
+        
+        .footer-s
+        {
+            -webkit-box-shadow: 1px -1px 15px 0px rgba(50, 50, 50, 0.50);
+            -moz-box-shadow: 1px -1px 15px 0px rgba(50, 50, 50, 0.50);
+            box-shadow: 1px 3px -1px 0px rgba(50, 50, 50, 0.50); /*background-color: #e5e5e5; 4F85BB D9E1F4*/
+            background: rgb(96,108,136); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(96,108,136,1) 0%, rgba(63,76,107,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(96,108,136,1)), color-stop(100%,rgba(63,76,107,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(96,108,136,1) 0%,rgba(63,76,107,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+        }
+        
+        .main
+        {
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(239,234,235,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(239,234,235,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(239,234,235,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(239,234,235,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(239,234,235,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(239,234,235,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#efeaeb',GradientType=0 ); /* IE6-9 */
+        }
+        
+        .button-circle
+        {
+            width: 100%;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 16px #f9f9f9, 0 0 0 16px #f1f1f1;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ionic-body">
+        <div class="bar bar-header header-s">
+            <a href="index.html" class="button header-s icon ion-home" style="color:White"></a>
+            <h1 class="title stable">
+                MAHA-SARKAR</h1>
+             <a href="index.html" class="button header-s icon ion-ios7-gear-outline" style="color:White"></a>
+        </div>
+        <div class="content has-header has-footer padding main" style="overflow: scroll;
+            height: 100%;">
+            <div class="row">
+                <div class="col" style="padding:20px;">
+                    <a href="Latest Cases.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Latest Cases</a>
+                </div>
+                <div class="col"  style="padding:20px;">
+                    <a href="topics.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Topic Search</a>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col" style="padding:20px;">
+                    <a href="Latest Cases.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Latest Cases</a>
+                </div>
+                <div class="col"  style="padding:20px;">
+                    <a href="topics.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Topic Search</a>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col" style="padding:20px;">
+                    <a href="Latest Cases.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Latest Cases</a>
+                </div>
+                <div class="col"  style="padding:20px;">
+                    <a href="topics.html" class="button button-full back button-circle" style="font-size: 18px;">
+                        <br />
+                        Topic Search</a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="tabs tabs-icon-top footer-s">
+            <a class="tab-item stable" style="border-right: dashed 1px silver;" href="Latest Cases.html">
+                <i class="icon ion-ios7-contact"></i>Cases </a><a class="tab-item stable" style="border-right: dashed 1px silver;"
+                    href="topics.html"><i class="icon ion-ios7-search"></i>Topic </a><a class="tab-item stable"
+                        style="border-right: dashed 1px silver;" href="advance.html"><i class="icon ion-ios7-mic">
+                        </i>Advance </a><a class="tab-item stable" style="border-right: dashed 1px silver;"
+                            href="topics.html"><i class="icon ion-levels"></i>Bare Act </a><a class="tab-item stable"
+                                href="history.html"><i class="icon ion-android-archive"></i>History
+            </a>
+        </div>
+    </div>
+</body>
+</html>

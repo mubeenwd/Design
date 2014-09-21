@@ -45,7 +45,9 @@
 
                     tx.executeSql(strCommand, [], function (tx, res) {
                         alert(JSON.stringify(res));
+                        $('.ionic-body').waitMe('hide');
                     }, function (error) {
+                        $('.ionic-body').waitMe('hide');
                         navigator.notification.alert(
                             JSON.stringify(error),
                             function () { },

@@ -38,7 +38,7 @@
                 db.transaction(function (tx) {
                     
                     var strCommand = "INSERT INTO Users";
-                    strCommand += "SELECT '" + userObject.DeviceId + "' AS DeviceId,'" +
+                    strCommand += " SELECT '" + userObject.DeviceId + "' AS DeviceId,'" +
                     userObject.UserName + "' AS UserName,'" + userObject.MobileNo + "' AS MobileNo,'" + userObject.Candidate + "' AS Candidate,'0' AS IsAllowed;";
 
                     alert(strCommand);

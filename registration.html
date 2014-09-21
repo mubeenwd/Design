@@ -1,0 +1,182 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Weather</title>
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/ionic.css">
+    <link rel="stylesheet" href="spinner/waitMe.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="spinner/waitMe.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
+        function onDeviceReady() {
+
+        }
+
+        function Register() {
+
+            $(".ionic-body").waitMe({
+                effect: 'ios',
+                text: 'Please wait',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000'
+            });
+
+            try {
+
+                var userObject = {
+                    DeviceId: device.uuid, UserName: $("#txtFirstName").val() + ' ' + $("#txtLasttName").val(), MobileNo: $("#txtMobileNo").val(),
+                    Candidate: $("#txtCandidate").val(), RegistrationDate: getCurrentDateAndTime()
+                };
+
+                $.ajax({
+                    url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
+                    type: 'POST',
+                    crossDomain: true,
+                    data: userObject,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data[0].HasError == "True") {
+                            navigator.notification.alert(
+                                'Unable to process your request, It must be doing somthing wrong, Please try again!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+
+                            $('.ionic-body').waitMe('hide');
+                        }
+                        else {
+                            if (data[0].Result > 0) {
+                                $('.ionic-body').waitMe('hide');
+
+                                var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
+
+                                //DeviceId text,UserName text,MobileNo text,Candidate text,IsAllowed integer
+
+                                var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
+                                strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "',0)";
+
+                                db.transaction(function (tx) {
+                                    tx.executeSql(strCommand, [], function (tx, res) {
+                                        location = 'activation.html';
+                                    }, function (tx, err) {
+                                        navigator.notification.alert(
+                                            JSON.stringify(err),
+                                            function () { },
+                                            'Maha Sarkar',
+                                            'Ok'
+                                        );
+                                    });
+                                });
+                            }
+                            else if (data[0].Result == 0) {
+                                $('.ionic-body').waitMe('hide');
+
+                                navigator.notification.alert(
+                                    data[0].Error,
+                                    function () { },
+                                    'Maha Sarkar',
+                                    'Ok'
+                                );
+                            }
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        if (jqXHR.status === 0) {
+                            $('.ionic-body').waitMe('hide');
+
+                            navigator.notification.alert(
+                                'Unable to process your request, please check your internet connecttion or ty again later!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+                        } else {
+                            $('.ionic-body').waitMe('hide');
+
+                            navigator.notification.alert(
+                                'Sorry, There was a problem with your last request. Please contact supprt!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+                        }
+                    }
+                });
+            } catch (e) {
+                $('.ionic-body').waitMe('hide');
+
+                navigator.notification.alert(
+                    'Sorry, There was a problem with your last request. Please contact supprt!',
+                    function () { },
+                    'Maha Sarkar',
+                    'Ok'
+                );
+            }
+        }
+
+        function getCurrentDateAndTime() {
+            var currentdate = new Date();
+            var datetime = currentdate.getFullYear() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getDate() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+            return datetime;
+        }
+
+    </script>
+</head>
+<body>
+    <div class="ionic-body">
+        <div class="bar bar-header bar-positive">
+            <a class="button icon ion-chevron-left" onclick="window.history.go(-1); return false;">
+            </a>
+            <h1 class="title">
+                Registration</h1>
+        </div>
+        <div class="content has-header has-footer padding" style="overflow: scroll; height: 100%;"
+            id="container">
+            <div class="list">
+                <label class="item item-input">
+                    <i class="icon ion-person placeholder-icon" style="font-size: 24px;"></i>&nbsp;&nbsp;
+                    <input type="text" placeholder="First Name" id="txtFirstName">
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-person placeholder-icon" style="font-size: 24px;"></i>&nbsp;&nbsp;
+                    <input type="text" placeholder="Last Name" id="txtLastName">
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-ipad placeholder-icon" style="font-size: 24px;"></i>&nbsp;&nbsp;
+                    <input type="number" placeholder="Mobile No" id="txtMobileNo">
+                </label>
+                <label class="item item-input">
+                    <i class="icon ion-person-add placeholder-icon" style="font-size: 24px;"></i>&nbsp;&nbsp;
+                    <input type="text" placeholder="Candidate" id="txtCandidate">
+                </label>
+                <label class="item">
+                    <button class="button button-full button-positive" onclick="Register();">
+                        Register
+                    </button>
+                </label>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="bar bar-footer bar-positive">
+            <a class="button button-positive ion-disc" href="about.html">&nbsp; </a>
+            <h1 class="title">
+                Sarkar - 2014</h1>
+            <a class="button button-positive ion-android-call" href="contact.html">&nbsp; </a>
+        </div>
+    </div>
+</body>
+</html>

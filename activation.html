@@ -1,0 +1,134 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Weather</title>
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/ionic.css">
+    <link rel="stylesheet" href="spinner/waitMe.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="spinner/waitMe.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+
+        }
+
+        function Activate() {
+            
+            $(".ionic-body").waitMe({
+                effect: 'ios',
+                text: 'Please wait',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000'
+            });
+
+            try {
+                $.ajax({
+                    url: 'http://sarkar.mubeen.in/Services/UserService.asmx/CheckStatus',
+                    type: 'POST',
+                    crossDomain: true,
+                    data: { pDeviceId: device.uuid },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data[0].HasError == "True") {
+                            navigator.notification.alert(
+                                'Unable to process your request, It must be doing somthing wrong, Please try again!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+
+                            $('.ionic-body').waitMe('hide');
+                        }
+                        else {
+
+                            if (data[0].IsAllowed == 1) {
+
+                                var strCommand = "UPDATE Users SET IsAllowed = " + data[0].IsAllowed + " WHERE DeviceId = " + device.uuid;
+
+                                db.transaction(function (tx) {
+                                    tx.executeSql(strCommand, [], function (tx, res) {
+                                        location = "update.html";
+                                    }, function (tx, err) {
+                                        navigator.notification.alert(
+                                            JSON.stringify(err),
+                                            function () { },
+                                            'Maha Sarkar',
+                                            'Ok'
+                                        );
+                                    });
+                                });
+                            }
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        if (jqXHR.status === 0) {
+                            $('.ionic-body').waitMe('hide');
+
+                            navigator.notification.alert(
+                                'Unable to process your request, please check your internet connecttion or ty again later!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+                        } else {
+                            $('.ionic-body').waitMe('hide');
+
+                            navigator.notification.alert(
+                                'Sorry, There was a problem with your last request. Please contact supprt!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
+                        }
+                    }
+                });
+            } catch (e) {
+                $('.ionic-body').waitMe('hide');
+
+                navigator.notification.alert(
+                    'Sorry, There was a problem with your last request. Please contact supprt!',
+                    function () { },
+                    'Maha Sarkar',
+                    'Ok'
+                );
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="ionic-body">
+        <div class="bar bar-header bar-positive">
+            <a class="button icon ion-chevron-left" onclick="window.history.go(-1); return false;">
+            </a>
+            <h1 class="title">
+                Activation</h1>
+        </div>
+        <div class="content has-header has-footer padding" style="overflow: scroll; height: 100%;"
+            id="container">
+            <p>
+                You should required to be activated</p>
+            <p>
+                Internet connection is must, in order to activate your application</p>
+            <p>
+                Please click below to acivate</p>
+            <button class="button button-full button-positive" onclick="Activate();">
+                Activate
+            </button>
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="bar bar-footer bar-positive">
+            <a class="button button-positive ion-disc" href="about.html">&nbsp; </a>
+            <h1 class="title">
+                Sarkar - 2014</h1>
+            <a class="button button-positive ion-android-call" href="contact.html">&nbsp; </a>
+        </div>
+    </div>
+</body>
+</html>

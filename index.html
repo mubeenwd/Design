@@ -5,99 +5,64 @@
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="css/ionic.css">
+    <link rel="stylesheet" href="spinner/waitMe.min.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="spinner/waitMe.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
 
-    <style type="text/css">
-        .header-s
-        {
-            
-            border-bottom:solid 3px white;
-            
-           background: rgb(205,235,142); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(205,235,142,1) 0%, rgba(165,201,86,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,142,1)), color-stop(100%,rgba(165,201,86,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
+        document.addEventListener("deviceready", onDeviceReady, false);
 
+        function onDeviceReady() {
+
+            $(".ionic-body").waitMe({
+                effect: 'ios',
+                text: 'Please wait',
+                bg: 'rgba(255,255,255,0.7)',
+                color: '#000'
+            });
+
+            var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
+
+            db.transaction(function (tx) {
+                tx.executeSql('CREATE TABLE IF NOT EXISTS Voters (VoterId integer primary key, PartNo integer,Srlno integer,Mname text,Ename text,Fname text,RlnName text,LName text,IdCard text,Age text,HouseNo text,Gender text,PsName text,PsLocation text)');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS Users (DeviceId text,UserName text,MobileNo text,Candidate text,IsAllowed integer)');
+                tx.executeSql("SELECT * FROM Users;", [], function (tx, res) {
+                    if (res.rows.length > 0) {
+                        if (res.rows.item(0).IsAllowed == 1) {
+                            location = 'home.html';
+                        }
+                        else {
+                            location = 'activation.html';
+                        }
+                    }
+                    else {
+                        location = 'registration.html';
+                    }
+                });
+            });
         }
-        
-        .footer-s
-        {
-           border-top:solid 3px white;
-            
-            background: rgb(205,235,142); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(205,235,142,1) 0%, rgba(165,201,86,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,142,1)), color-stop(100%,rgba(165,201,86,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(205,235,142,1) 0%,rgba(165,201,86,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
-
-
-        }
-        
-        .main
-        {
-          background: -moz-linear-gradient(top,  rgba(205,235,139,0.33) 0%, rgba(205,235,139,0.4) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,139,0.33)), color-stop(100%,rgba(205,235,139,0.4))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(205,235,139,0.33) 0%,rgba(205,235,139,0.4) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(205,235,139,0.33) 0%,rgba(205,235,139,0.4) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(205,235,139,0.33) 0%,rgba(205,235,139,0.4) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(205,235,139,0.33) 0%,rgba(205,235,139,0.4) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#54cdeb8b', endColorstr='#66cdeb8b',GradientType=0 ); /* IE6-9 */
-
-
-
-        }
-        
-        .button-circle
-        {
-            width: 100%;
-            height: 150px;
-            border-radius: 50%;
-            box-shadow: inset 0 0 0 16px #f9f9f9, 0 0 0 16px #f1f1f1;
-            text-align: center;
-        }
-    </style>
+    </script>
 </head>
 <body>
     <div class="ionic-body">
-        <div class="bar bar-header header-s">
-            <a href="index.html" class="button header-s ion-navicon-round" style="color: White;
-                border: none; font-size: 20px;"></a>
-            <h1 class="title stable">
-                MAHA-SARKAR</h1>
-            <a href="index.html" class="button header-s ion-android-settings" style="color: White;
-                font-size: 20px; border: none;"></a>
+        <div class="bar bar-header bar-positive">
+            <a class="button icon ion-chevron-left" onclick="window.history.go(-1); return false;">
+            </a>
+            <h1 class="title">
+                Maha Sarkar - 2014</h1>
         </div>
-        <div class="content has-header has-footer padding main" style="overflow: scroll;
-            height: 100%;">
-
-            <!--<div class="list">
-                <a class="item item-icon-left" href="#" onclick="OnAnchorClick();"><i class="icon ion-search"></i>Search
-                </a>
-                <a class="item item-icon-left" href="#"><i class="icon ion-navicon-round"></i>List
-                </a>
-                <a class="item item-icon-left" href="#"><i class="icon ion-pie-graph"></i>Charts
-                </a>
-                <a class="item item-icon-left" href="#"><i class="icon ion-at"></i>Support
-                </a>
-            </div>-->
-
+        <div class="content has-header has-footer padding" style="overflow: scroll; height: 100%;"
+            id="container">
             <br />
             <br />
             <br />
         </div>
-        <div class="bar bar-footer footer-s">
-            <a href="index.html" class="button header-s ion-disc" style="color: White; border: none;
-                font-size: 20px;"></a>
-            <h1 class="title stable">
-                Candidate Name</h1>
-            <a href="index.html" class="button header-s ion-ios7-telephone-outline" style="color: White;
-                border: none; font-size: 20px;"></a>
+        <div class="bar bar-footer bar-positive">
+            <a class="button button-positive ion-disc" href="about.html">&nbsp; </a>
+            <h1 class="title">
+                Sarkar - 2014</h1>
+            <a class="button button-positive ion-android-call" href="contact.html">&nbsp; </a>
         </div>
     </div>
 </body>

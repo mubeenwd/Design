@@ -36,7 +36,7 @@
                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
                 db.transaction(function (tx) {
-                    
+
                     var strCommand = "INSERT INTO Users";
                     strCommand += " SELECT '" + userObject.DeviceId + "' AS DeviceId,'" +
                     userObject.UserName + "' AS UserName,'" + userObject.MobileNo + "' AS MobileNo,'" + userObject.Candidate + "' AS Candidate,'0' AS IsAllowed;";
@@ -44,16 +44,13 @@
                     alert(strCommand);
 
                     tx.executeSql(strCommand, [], function (tx, res) {
+                        alert('execute hogaya');
                         alert(JSON.stringify(res));
                         $('.ionic-body').waitMe('hide');
-                    }, function (error) {
+                    }, function (tx, err) {
+                        alert('error aya');
+                        alert("tx.executeSql: " + JSON.stringify(err));
                         $('.ionic-body').waitMe('hide');
-                        navigator.notification.alert(
-                            JSON.stringify(error),
-                            function () { },
-                            'Maha Sarkar',
-                            'Ok'
-                        );
                     });
                 });
             } catch (e) {

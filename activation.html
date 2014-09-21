@@ -17,7 +17,7 @@
 
             var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
-            var strCommand = 'SELECT * FROM Users WHERE DeviceId = ' + device.uuid + ' ORDER BY DeviceId;';
+            var strCommand = "SELECT * FROM Users WHERE DeviceId = '" + device.uuid + "' ;";
 
             db.transaction(function (tx) {
                 tx.executeSql(strCommand, [], function (tx, res) {

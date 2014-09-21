@@ -55,8 +55,10 @@
                         else {
 
                             if (data[0].Result > 0) {
-                                
+
                                 $('.ionic-body').waitMe('hide');
+
+                                alert("data[0].Result :" + data[0].Result);
 
                                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
@@ -69,6 +71,13 @@
                                     }, function (tx, err) {
                                         navigator.notification.alert(
                                             JSON.stringify(err),
+                                            function () { },
+                                            'Maha Sarkar',
+                                            'Ok'
+                                        );
+                                    }, function (error) {
+                                        navigator.notification.alert(
+                                            JSON.stringify(error),
                                             function () { },
                                             'Maha Sarkar',
                                             'Ok'

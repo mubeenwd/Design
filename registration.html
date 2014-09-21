@@ -54,7 +54,9 @@
                             $('.ionic-body').waitMe('hide');
                         }
                         else {
+
                             if (data[0].Result > 0) {
+                                
                                 $('.ionic-body').waitMe('hide');
 
                                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
@@ -64,12 +66,6 @@
 
                                 db.transaction(function (tx) {
                                     tx.executeSql(strCommand, [], function (tx, res) {
-                                        navigator.notification.alert(
-                                            JSON.stringify(res),
-                                            function () { },
-                                            'Maha Sarkar',
-                                            'Ok'
-                                        );
                                         location = 'activation.html';
                                     }, function (tx, err) {
                                         navigator.notification.alert(

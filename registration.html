@@ -40,8 +40,7 @@
                     crossDomain: true,
                     data: userObject,
                     dataType: 'json',
-                    success: function (obj) {
-                        var data = $.parseJSON(obj);
+                    success: function (data) {
 
                         if (data[0].HasError == "True") {
                             navigator.notification.alert(

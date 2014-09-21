@@ -63,7 +63,7 @@
                                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
                                 var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
-                                strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "',0)";
+                                strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "',0);";
 
                                 db.transaction(function (tx) {
                                     tx.executeSql(strCommand, [], function (tx, res) {

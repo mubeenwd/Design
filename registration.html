@@ -19,7 +19,6 @@
 
         function Register() {
 
-
             $(".ionic-body").waitMe({
                 effect: 'ios',
                 text: 'Please wait',
@@ -36,8 +35,6 @@
 
                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
-
-
                 db.transaction(function (tx) {
 
                     var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
@@ -45,8 +42,9 @@
 
                     tx.executeSql(strCommand, [], function (tx, res) {
                         alert(JSON.stringify(res));
+                        
                         $.ajax({
-                            url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
+                         url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
                             type: 'POST',
                             crossDomain: true,
                             data: userObject,

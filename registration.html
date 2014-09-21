@@ -44,13 +44,13 @@
                     alert(strCommand);
 
                     tx.executeSql(strCommand, [], function (tx, res) {
+                        $('.ionic-body').waitMe('hide');
                         alert('execute hogaya');
                         alert(JSON.stringify(res));
-                        $('.ionic-body').waitMe('hide');
                     }, function (tx, err) {
+                        $('.ionic-body').waitMe('hide');
                         alert('error aya');
                         alert("tx.executeSql: " + JSON.stringify(err));
-                        $('.ionic-body').waitMe('hide');
                     });
                 });
             } catch (e) {

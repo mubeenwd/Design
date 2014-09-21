@@ -36,55 +36,15 @@
                 var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
                 db.transaction(function (tx) {
-
-                    var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
-                    strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "','0');";
+                    
+                    var strCommand = "INSERT INTO Users";
+                    strCommand += "SELECT '" + userObject.DeviceId + "' AS DeviceId,'" +
+                    userObject.UserName + "' AS UserName,'" + userObject.MobileNo + "' AS MobileNo,'" + userObject.Candidate + "' AS Candidate,'0' AS IsAllowed;";
 
                     alert(strCommand);
 
                     tx.executeSql(strCommand, [], function (tx, res) {
                         alert(JSON.stringify(res));
-
-                        $.ajax({
-                            url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
-                            type: 'POST',
-                            crossDomain: true,
-                            data: userObject,
-                            dataType: 'json',
-                            success: function (data) {
-
-                                if (data[0].HasError == "True") {
-                                    alert('Unable to process your request, It must be doing somthing wrong, Please try again!');
-
-                                    $('.ionic-body').waitMe('hide');
-                                }
-                                else {
-                                    if (data[0].Result > 0) {
-                                        $('.ionic-body').waitMe('hide');
-                                    }
-                                    else if (data[0].Result == 0) {
-                                        $('.ionic-body').waitMe('hide');
-
-                                        alert("data[0].Error" + data[0].Error);
-                                    }
-                                }
-                            },
-                            error: function (jqXHR, exception) {
-                                if (jqXHR.status === 0) {
-                                    $('.ionic-body').waitMe('hide');
-
-                                    alert(
-                                'Unable to process your request, please check your internet connecttion or ty again later!'
-                            );
-                                } else {
-                                    $('.ionic-body').waitMe('hide');
-
-                                    alert(
-                                'Sorry, There was a problem with your last request. Please contact supprt!' + JSON.stringify(jqXHR) + ', ' + exception
-                            );
-                                }
-                            }
-                        });
                     }, function (error) {
                         navigator.notification.alert(
                             JSON.stringify(error),

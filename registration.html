@@ -48,9 +48,9 @@
                             data: userObject,
                             dataType: 'json',
                             success: function (data) {
-
+                                
                                 if (data[0].HasError == "True") {
-
+                                    
                                     $('.ionic-body').waitMe('hide');
 
                                     location = 'activation.html';
@@ -61,7 +61,7 @@
 
                                         $('.ionic-body').waitMe('hide');
 
-
+                                        location = 'activation.html';
                                     }
                                     else if (data[0].Result == 0) {
                                         $('.ionic-body').waitMe('hide');

@@ -19,6 +19,7 @@
 
         function Register() {
 
+
             $(".ionic-body").waitMe({
                 effect: 'ios',
                 text: 'Please wait',
@@ -41,12 +42,12 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data[0].HasError == "True") {
-//                            navigator.notification.alert(
-//                                'Unable to process your request, It must be doing somthing wrong, Please try again!',
-//                                function () { },
-//                                'Maha Sarkar',
-//                                'Ok'
-//                            );
+                            navigator.notification.alert(
+                                'Unable to process your request, It must be doing somthing wrong, Please try again!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
 
                             $('.ionic-body').waitMe('hide');
                         }
@@ -65,24 +66,24 @@
                                     tx.executeSql(strCommand, [], function (tx, res) {
                                         location = 'activation.html';
                                     }, function (tx, err) {
-//                                        navigator.notification.alert(
-//                                            JSON.stringify(err),
-//                                            function () { },
-//                                            'Maha Sarkar',
-//                                            'Ok'
-//                                        );
+                                        navigator.notification.alert(
+                                            JSON.stringify(err),
+                                            function () { },
+                                            'Maha Sarkar',
+                                            'Ok'
+                                        );
                                     });
                                 });
                             }
                             else if (data[0].Result == 0) {
                                 $('.ionic-body').waitMe('hide');
 
-//                                navigator.notification.alert(
-//                                    data[0].Error,
-//                                    function () { },
-//                                    'Maha Sarkar',
-//                                    'Ok'
-//                                );
+                                navigator.notification.alert(
+                                    data[0].Error,
+                                    function () { },
+                                    'Maha Sarkar',
+                                    'Ok'
+                                );
                             }
                         }
                     },
@@ -90,33 +91,32 @@
                         if (jqXHR.status === 0) {
                             $('.ionic-body').waitMe('hide');
 
-//                            navigator.notification.alert(
-//                                'Unable to process your request, please check your internet connecttion or ty again later!',
-//                                function () { },
-//                                'Maha Sarkar',
-//                                'Ok'
-//                            );
+                            navigator.notification.alert(
+                                'Unable to process your request, please check your internet connecttion or ty again later!',
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
                         } else {
                             $('.ionic-body').waitMe('hide');
 
-//                            navigator.notification.alert(
-//                                'Sorry, There was a problem with your last request. Please contact supprt!' + JSON.stringify(jqXHR) + ', ' + exception,
-//                                function () { },
-//                                'Maha Sarkar',
-//                                'Ok'
-//                            );
+                            navigator.notification.alert(
+                                'Sorry, There was a problem with your last request. Please contact supprt!' + JSON.stringify(jqXHR) + ', ' + exception,
+                                function () { },
+                                'Maha Sarkar',
+                                'Ok'
+                            );
                         }
                     }
                 });
             } catch (e) {
                 $('.ionic-body').waitMe('hide');
-                alert(e)
-//                navigator.notification.alert(
-//                    'Sorry, There was a problem with your last request. Please contact supprt!',
-//                    function () { },
-//                    'Maha Sarkar',
-//                    'Ok'
-//                );
+                navigator.notification.alert(
+                    'Sorry, There was a problem with your last request. Please contact supprt! ' + e,
+                    function () { },
+                    'Maha Sarkar',
+                    'Ok'
+                );
             }
         }
 

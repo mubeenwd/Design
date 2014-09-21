@@ -11,11 +11,11 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript">
 
-//        document.addEventListener("deviceready", onDeviceReady, false);
-//        
-//        function onDeviceReady() {
+        document.addEventListener("deviceready", onDeviceReady, false);
 
-//        }
+        function onDeviceReady() {
+            
+        }
 
         function Register() {
 
@@ -34,98 +34,77 @@
                     Candidate: $("#txtCandidate").val(), RegistrationDate: getCurrentDateAndTime()
                 };
 
-                $.ajax({
-                    url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
-                    type: 'POST',
-                    crossDomain: true,
-                    data: userObject,
-                    dataType: 'json',
-                    success: function (data) {
+                var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
 
-                        if (data[0].HasError == "True") {
-                            navigator.notification.alert(
-                                'Unable to process your request, It must be doing somthing wrong, Please try again!',
-                                function () { },
-                                'Maha Sarkar',
-                                'Ok'
-                            );
+                var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
+                strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "',0);";
 
-                            $('.ionic-body').waitMe('hide');
-                        }
-                        else {
+                db.transaction(function (tx) {
+                    tx.executeSql(strCommand, [], function (tx, res) {
+                        $.ajax({
+                            url: 'http://sarkar.mubeen.in/Services/UserService.asmx/Register',
+                            type: 'POST',
+                            crossDomain: true,
+                            data: userObject,
+                            dataType: 'json',
+                            success: function (data) {
 
-                            if (data[0].Result > 0) {
+                                if (data[0].HasError == "True") {
 
-                                $('.ionic-body').waitMe('hide');
+                                    $('.ionic-body').waitMe('hide');
 
-                                alert("data[0].Result :" + data[0].Result);
+                                    location = 'activation.html';
+                                }
+                                else {
 
-                                var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
+                                    if (data[0].Result > 0) {
 
-                                var strCommand = "INSERT INTO Users(DeviceId,UserName,MobileNo,Candidate,IsAllowed)";
-                                strCommand += " VALUES('" + userObject.DeviceId + "','" + userObject.UserName + "','" + userObject.MobileNo + "','" + userObject.Candidate + "',0);";
+                                        $('.ionic-body').waitMe('hide');
 
-                                db.transaction(function (tx) {
-                                    tx.executeSql(strCommand, [], function (tx, res) {
+
+                                    }
+                                    else if (data[0].Result == 0) {
+                                        $('.ionic-body').waitMe('hide');
 
                                         navigator.notification.alert(
-                                            JSON.stringify(res),
+                                            data[0].Error,
                                             function () { },
                                             'Maha Sarkar',
                                             'Ok'
                                         );
+                                    }
+                                }
+                            },
+                            error: function (jqXHR, exception) {
+                                if (jqXHR.status === 0) {
+                                    $('.ionic-body').waitMe('hide');
 
-                                        location = 'activation.html';
-                                    }, function (tx, err) {
-                                        navigator.notification.alert(
-                                            JSON.stringify(err),
-                                            function () { },
-                                            'Maha Sarkar',
-                                            'Ok'
-                                        );
-                                    }, function (error) {
-                                        navigator.notification.alert(
-                                            JSON.stringify(error),
-                                            function () { },
-                                            'Maha Sarkar',
-                                            'Ok'
-                                        );
-                                    });
-                                });
+                                    navigator.notification.alert(
+                                        'Unable to process your request, please check your internet connecttion or ty again later!',
+                                        function () { },
+                                        'Maha Sarkar',
+                                        'Ok'
+                                    );
+                                } else {
+                                    $('.ionic-body').waitMe('hide');
+
+                                    navigator.notification.alert(
+                                        'Sorry, There was a problem with your last request. Please contact supprt!' + JSON.stringify(jqXHR) + ', ' + exception,
+                                        function () { },
+                                        'Maha Sarkar',
+                                        'Ok'
+                                    );
+                                }
                             }
-                            else if (data[0].Result == 0) {
-                                $('.ionic-body').waitMe('hide');
-
-                                navigator.notification.alert(
-                                    data[0].Error,
-                                    function () { },
-                                    'Maha Sarkar',
-                                    'Ok'
-                                );
-                            }
-                        }
-                    },
-                    error: function (jqXHR, exception) {
-                        if (jqXHR.status === 0) {
-                            $('.ionic-body').waitMe('hide');
-
-                            navigator.notification.alert(
-                                'Unable to process your request, please check your internet connecttion or ty again later!',
-                                function () { },
-                                'Maha Sarkar',
-                                'Ok'
-                            );
-                        } else {
-                            $('.ionic-body').waitMe('hide');
-
-                            navigator.notification.alert(
-                                'Sorry, There was a problem with your last request. Please contact supprt!' + JSON.stringify(jqXHR) + ', ' + exception,
-                                function () { },
-                                'Maha Sarkar',
-                                'Ok'
-                            );
-                        }
-                    }
+                        });
+                    }, function (error) {
+                        navigator.notification.alert(
+                            JSON.stringify(error),
+                            function () { },
+                            'Maha Sarkar',
+                            'Ok'
+                        );
+                    });
                 });
             } catch (e) {
                 $('.ionic-body').waitMe('hide');

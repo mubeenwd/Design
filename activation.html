@@ -15,10 +15,34 @@
 
         function onDeviceReady() {
 
+            var db = window.sqlitePlugin.openDatabase({ name: "sarkar.db" });
+
+            var strCommand = 'SELECT * FROM Users WHERE DeviceId = ' + device.uuid + ' ORDER BY DeviceId;';
+
+            db.transaction(function (tx) {
+                tx.executeSql(strCommand, [], function (tx, res) {
+                    var strHtmlList = '<div class="item item-divider">' + res.rows.item(0).UserName + '</div>';
+                    strHtmlList += '<a class="item item-icon-left" href="#"><i class="icon ion-pad"></i>' + res.rows.item(0).MobileNo + '</a>';
+                    strHtmlList += '<a class="item item-icon-left" href="#"><i class="icon ion-person"></i>' + res.rows.item(0).Candidate + '</a>';
+                    if (res.rows.item(0).IsAllowed == 1) {
+                        strHtmlList += '<a class="item item-icon-left" href="#"><i class="icon ion-eye"></i>' + res.rows.item(0).IsAllowed + '</a>';
+                    }
+                    else {
+                        strHtmlList += '<a class="item item-icon-left" href="#"><i class="icon ion-eye-disabled"></i>Your device is not activated yet</a>';
+                    }
+
+                    strHtmlList += '<a class="item button button-full button-outline button-positive" href="#">Activate Me</a>';
+
+                    $("#lstDetails").html(strHtmlList);
+
+                }, function (tx, err) {
+                    app.addMessage("tx.executeSql: " + JSON.stringify(err));
+                });
+            });
         }
 
         function Activate() {
-            
+
             $(".ionic-body").waitMe({
                 effect: 'ios',
                 text: 'Please wait',
@@ -45,7 +69,7 @@
                             $('.ionic-body').waitMe('hide');
                         }
                         else {
-                            
+
                             if (data[0].IsAllowed == 1) {
 
                                 var strCommand = "UPDATE Users SET IsAllowed = " + data[0].IsAllowed + " WHERE DeviceId = " + device.uuid;
@@ -110,15 +134,10 @@
         </div>
         <div class="content has-header has-footer padding" style="overflow: scroll; height: 100%;"
             id="container">
-            <p>
-                You should required to be activate</p>
-            <p>
-                Internet connection is must, in order to activate your application</p>
-            <p>
-                Please click below to acivate</p>
-            <button class="button button-full button-positive" onclick="Activate();">
-                Activate
-            </button>
+            <ul class="list" id="lstDetails">
+                
+            </ul>
+           
             <br />
             <br />
             <br />
